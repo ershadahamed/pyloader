@@ -12,11 +12,21 @@ def tesseract(image):
     ocr = pytesseract.image_to_data(img)
     end = time.time()
 
-    cv2.imshow('sd', img)
-    cv2.waitKey(0)
+    # cv2.imshow('Sample Image', img)
+    # cv2.waitKey(0)
 
     print(f'Time taken: {end-start}')
-    return ocr
+    # main data needed here is OCR variable, below just the logics for this data
+    out = ocr.splitlines()
+    output = []
+    for o in out[1:]:
+        if int(o.split('\t')[10]) > 50:
+            output += o.split('\t')[-1:]
+
+    for l in output:
+        print(l)
+
+    return output
 
 
 def run(gpu, image):
@@ -40,12 +50,5 @@ def run(gpu, image):
     else:
         print(f'Total time taken with out GPU/CUDA: {end - start}')
 
-
-# run(False)
-# print('PAUSE')
-# run(True, 'text1.jpg')
-# run(True, 'text2.jpg')
-# run(True, 'text3.png')
-# run(True, 'text4.png')
 
 print(tesseract('../../assets/images/text2.jpg'))
